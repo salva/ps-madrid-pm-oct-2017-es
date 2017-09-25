@@ -1,0 +1,22 @@
+
+.reveal .src {
+    box-shadow: 0px 0px 0px rgba(0,0,0,0);
+}
+
+.reveal .src.src-output {
+    color: khaki;
+    font-size: small;
+}
+
+.reveal .src.src-wide-output {
+    color: khaki;
+    font-size: small;
+    margin-right: 0;
+    margin-left: 0;
+
+}
+
+.reveal .slides section pre .src.src-output {
+    color: khaki;
+    font-size: small;
+}

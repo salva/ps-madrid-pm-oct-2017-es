@@ -1,0 +1,139 @@
+#+Title: capio
+
+#+Author: Salvador Fandiño
+#+Email: sfandino@yahoo.com
+
+#+OPTIONS: toc:nil
+#+OPTIONS: num:nil
+#+OPTIONS: :nil
+#+OPTIONS: ^:{}
+
+#+REVEAL_THEME: black
+#+REVEAL_ROOT: http://cdn.jsdelivr.net/reveal.js/3.0.0/
+
+#+REVEAL_EXTRA_CSS: ./extra.css
+
+* ~capio~
+
+  ~capio~ es un programa de monitorización de procesos.
+
+  Similar a ~strace~, pero haciendo foco en la entrada/salida.
+
+  Solo para Linux.
+
+  Solo para x86_64 (por ahora).
+
+* Como se usa
+
+** Pasando el comando a ejecutar
+
+#+BEGIN_SRC shell
+capio echo hello
+#+END_SRC
+
+#+BEGIN_SRC wide-output
+# open(filename:"/etc/ld.so.cache", flags:O_RDONLY|O_CLOEXEC|524288, mode:0001) = 4; path:"/etc/ld.so.cache"
+# mmap(fd:4) = 140434569814016
+# close(fd:4) = 0
+# open(filename:"/lib/x86_64-linux-gnu/libc.so.6", flags:O_RDONLY|O_CLOEXEC|524288, mode:03773457052320550) = 4; path:"/lib/x86_64-linux-gnu/libc-2.24.so"
+# read(fd:4) = 832
+< 7f 45 4c 46 02 01 01 03 00 00 00 00 00 00 00 00 03 00 3e 00 01 00 00 00 10 05 02 00 00 00 00 00 < .ELF..............>.............
+< 40 00 00 00 00 00 00 00 b0 42 1c 00 00 00 00 00 00 00 00 00 40 00 38 00 0a 00 40 00 49 00 48 00 < @........B..........@.8...@.I.H.
+< 06 00 00 00 05 00 00 00 40 00 00 00 00 00 00 00 40 00 00 00 00 00 00 00 40 00 00 00 00 00 00 00 < ........@.......@.......@.......
+< 30 02 00 00 00 00 00 00 30 02 00 00 00 00 00 00 08 00 00 00 00 00 00 00 03 00 00 00 04 00 00 00 < 0.......0.......................
+< c0 43 19 00 00 00 00 00 c0 43 19 00 00 00 00 00 c0 43 19 00 00 00 00 00 1c 00 00 00 00 00 00 00 < .C.......C.......C..............
+...
+#+END_SRC
+
+** Pasando el pid
+
+#+BEGIN_SRC shell
+capio -p `pidof firefox`
+#+END_SRC
+
+** Selectores
+
+#+BEGIN_SRC shell
+capio -f -n "/*/ssh" -N "socket:*" -l0 -l1 scp localhost:/etc/host.conf /tmp
+#+END_SRC
+
+#+BEGIN_SRC wide-output
+# 31566 dup(fd:0) = 5
+# 31566 dup(fd:1) = 6
+# 31566 read(fd:5) = 1
+< 00 __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ < .
+# 31566 write(fd:6) = 19
+> 43 30 36 34 34 20 39 32 20 68 6f 73 74 2e 63 6f 6e 66 0a __ __ __ __ __ __ __ __ __ __ __ __ __ > C0644 92 host.conf.
+# 31566 read(fd:5) = 1
+< 00 __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ < .
+host.conf                                                                                             0%    0     0.0KB/s   --:-- ETA# 31566 write(fd:6) = 93
+> 23 20 54 68 65 20 22 6f 72 64 65 72 22 20 6c 69 6e 65 20 69 73 20 6f 6e 6c 79 20 75 73 65 64 20 > # The "order" line is only used 
+> 62 79 20 6f 6c 64 20 76 65 72 73 69 6f 6e 73 20 6f 66 20 74 68 65 20 43 20 6c 69 62 72 61 72 79 > by old versions of the C library
+> 2e 0a 6f 72 64 65 72 20 68 6f 73 74 73 2c 62 69 6e 64 0a 6d 75 6c 74 69 20 6f 6e 0a 00 __ __ __ > ..order hosts,bind.multi on..
+host.conf                                                                                           100%   92   216.9KB/s   00:00    
+# 31566 read(fd:5) = 1
+< 00 __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ < .
+# 31566 close(fd:6) = 0
+# 31566 close(fd:5) = 0
+#+END_SRC
+
+** Formatos de salida
+
+#+BEGIN_SRC shell
+$ capio -mn -q -f -n "/*/ssh" -N "socket:*" -l0 -l1 scp localhost:/etc/host.conf /tmp
+#+END_SRC
+
+#+BEGIN_SRC output
+< "\0"
+> "C0644 92 host.conf\n"
+< "\0"
+> "# The "order" line is only used by old versions of the C library.\n"
+> "order hosts,bind\n"
+> "multi on\n"
+> "\0"
+< "\0"
+#+END_SRC
+
+** Redirigir la salida de forma independiente
+
+#+BEGIN_SRC shell
+capio -O -o /tmp/output -p `pidof apache`
+#+END_SRC
+
+* ¿Que tiene esto que ver con Perl?
+
+* Perl embebido
+
+** One-liners
+
+#+BEGIN_SRC shell
+capio -q -e 'say if /cookie/i' -p `pidof firefox`
+#+END_SRC
+
+** Scripts
+
+#+BEGIN_SRC shell
+capio -M ./script.pl -p `pidof firefox`
+#+END_SRC
+
+#+BEGIN_SRC perl
+use strict;
+use warnings;
+use 5.024;
+
+sub _ {
+    say if /cookie/i;
+}
+#+END_SRC
+
+** Variables
+
+   ~$_~ ~$PID~ ~$OP~ ~$FD~ ~$DIR~ ~$R~ ~$W~ ~$FN~ ~$EXE~ ~$RC~ ~$MEM~
+   ~$LEN~ ~OUT~
+
+* El lado oscuro...
+
+* ¿Preguntas?
+
+* Gracias
+
