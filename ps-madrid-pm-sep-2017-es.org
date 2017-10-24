@@ -13,6 +13,75 @@
 
 #+REVEAL_EXTRA_CSS: ./extra.css
 
+* Arañando mi propio picazón...
+
+** ~tea4cups~
+
+   Backend para CUPS que permite ejecutar acciones (scripts) sobre los
+   trabajos de impresión.
+
+   Nosotros (en el curro) lo utilizamos para redirigir trabajos de
+   impresión de Linux a Windows.
+
+   Bien como prueba de concepto, pero queremos reemplazarlo por un
+   programa más simple y que se ajuste mejor a nuestras necesidades.
+
+   ¡Es sólo cuestión de ver que hace ~tea4cups~ y componer un programa
+   con las partes que nos interesan!
+
+** ¿Como funciona CUPS?
+
+   CUPS esta perfectamente documentado:
+
+   https://www.cups.org/documentation.html
+
+   https://www.cups.org/doc/api-cups.html
+
+** ¿Como funciona ~tea4cups~?
+
+   ~tea4cups~ es un script de Python
+
+   #+ATTR_REVEAL: :frag appear
+   ¡Todo el mundo sabe que es muy fácil entender los programas escritos en Python!
+
+   #+ATTR_REVEAL: :frag appear
+   http://svn.pykota.com/tea4cups/trunk/tea4cups
+
+** 💡
+
+   #+ATTR_REVEAL: :frag appear
+   ¿Para que vamos a estudiar el código de un programa cuando podemos
+   hacer ingeniería inversa?
+
+** Necesito...
+
+   #+ATTR_REVEAL: :frag appear
+   ...un programa que me permita ver el diálogo entre ~CUPS~ y ~tea4cups~.
+
+   #+ATTR_REVEAL: :frag appear
+   ...algo similar a ~Wireshark~ pero que funcione con sockets, pipes, ficheros, etc.
+
+** 🔍
+
+   - ~strace~:
+     - Monitor de procesos de proposito general, flexible y maduro.
+     - No presenta flujos de I/O más que de manera muy rudimentaria.
+     - Basado en [[http://man7.org/linux/man-pages/man2/ptrace.2.html][ptrace(2)]].
+
+   - ~SysDig~, ~LTTng~, ~DTrace~, etc.
+     - Frameworks que permiten introducir sondas en el kernel.
+     - Algunos tienen su propio lenguaje de programación.
+     - Complejos y dificiles de usar.
+
+** ☹
+
+** ~ptrace~
+
+#+ATTR_REVEAL: :frag appear
+Siempre he querido hacer algo con ~ptrace(2)~
+
+** ☺
+
 * ~capio~
 
   ~capio~ es un programa de monitorización de procesos.
@@ -54,7 +123,7 @@ capio -p `pidof firefox`
 ** Selectores
 
 #+BEGIN_SRC shell
-capio -f -n "/*/ssh" -N "socket:*" -l0 -l1 scp localhost:/etc/host.conf /tmp
+ capio -f -n "/*/ssh" -N "socket:*" -l0 -l1 scp localhost:/etc/host.conf /tmp
 #+END_SRC
 
 #+BEGIN_SRC wide-output
