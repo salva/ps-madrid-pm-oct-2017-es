@@ -63,11 +63,13 @@
 
 ** 🔍
 
+   #+ATTR_REVEAL: :frag appear
    - ~strace~:
      - Monitor de procesos de proposito general, flexible y maduro.
      - No presenta flujos de I/O más que de manera muy rudimentaria.
      - Basado en [[http://man7.org/linux/man-pages/man2/ptrace.2.html][ptrace(2)]].
 
+   #+ATTR_REVEAL: :frag appear
    - ~SysDig~, ~LTTng~, ~DTrace~, etc.
      - Frameworks que permiten introducir sondas en el kernel.
      - Algunos tienen su propio lenguaje de programación.
@@ -75,10 +77,20 @@
 
 ** ☹
 
-** ~ptrace~
+** ~ptrace(2)~
 
 #+ATTR_REVEAL: :frag appear
-Siempre he querido hacer algo con ~ptrace(2)~
+#+BEGIN_SRC
+DESCRIPTION
+       The  ptrace()  system  call provides a means by which one
+       process (the "tracer") may observe and control the execution
+       of another process (the "tracee"), and examine and change
+       the tracee's memory and registers.  It is primarily used to
+       implement breakpoint debugging and system call tracing.
+#+END_SRC
+
+#+ATTR_REVEAL: :frag appear
+¡Siempre he querido hacer algo con ~ptrace~!
 
 ** ☺
 
@@ -197,10 +209,54 @@ sub _ {
 
 ** Variables
 
-   ~$_~ ~$PID~ ~$OP~ ~$FD~ ~$DIR~ ~$R~ ~$W~ ~$FN~ ~$EXE~ ~$RC~ ~$MEM~
-   ~$LEN~ ~OUT~
+   ...globales y faciles de usar en one-liners:
+
+   - ~$_~: Los datos en la operación de I/O.
+
+   - ~$LEN~: La longitud de los datos.
+
+   - ~$PID~: El identificador del proceso.
+
+   - ~$OP~: El código de la operación (syscall).
+
+   - ~$FD~: El descriptor de fichero (un número).
+
+   - ~$DIR~, ~$R~, ~$W~: Lectura o escritura.
+
+   - ~$FN~: El path del fichero.
+
+   - ~$EXE~: El path del ejecutable.
+
+   - ~$RC~: El resultado de la operación.
+
+   - ~OUT~: El fichero al que ha de enviarse la salida.
+
+** Ejemplo
+
+   [[https://github.com/salva/capio/blob/master/examples/ipp.pl][ipp.pl]]
 
 * El lado oscuro...
+
+** Lenguaje
+
+   #+ATTR_REVEAL: :frag appear, fade-out
+   I ❤ Rust
+
+   #+ATTR_REVEAL: :frag appear, fade-out
+   I ❤ C
+
+   #+ATTR_REVEAL: :frag appear
+   I..., I..., I... C++
+
+** La metodología
+
+   #+ATTR_REVEAL
+   I ❤ Caos
+
+** Perl embebido
+
+   [[https://github.com/salva/capio/blob/master/perl.h][perl.h]]
+
 
 * ¿Preguntas?
 
