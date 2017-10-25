@@ -7,11 +7,19 @@
 #+OPTIONS: num:nil
 #+OPTIONS: :nil
 #+OPTIONS: ^:{}
+#+OPTIONS: reveal_title_slide:nil
 
 #+REVEAL_THEME: black
 #+REVEAL_ROOT: http://cdn.jsdelivr.net/reveal.js/3.0.0/
 
 #+REVEAL_EXTRA_CSS: ./extra.css
+
+* Capio
+
+  Salvador Fandiño García ([[mailto:sfandino@yahoo.com][sfandino@yahoo.com]])
+
+  Madrid Perl Mongers, 26 de octubre de 2017. 
+
 
 * Arañando mi propio picazón...
 
@@ -66,8 +74,8 @@
    #+ATTR_REVEAL: :frag appear
    - ~strace~:
      - Monitor de procesos de proposito general, flexible y maduro.
-     - No presenta flujos de I/O más que de manera muy rudimentaria.
      - Basado en [[http://man7.org/linux/man-pages/man2/ptrace.2.html][ptrace(2)]].
+     - Presenta las operationes de I/O de manera muy rudimentaria.
 
    #+ATTR_REVEAL: :frag appear
    - ~SysDig~, ~LTTng~, ~DTrace~, etc.
@@ -96,7 +104,7 @@ DESCRIPTION
 
 * ~capio~
 
-  ~capio~ es un programa de monitorización de procesos.
+  ~capio~ es un programa para la monitorización de procesos.
 
   Similar a ~strace~, pero haciendo foco en la entrada/salida.
 
@@ -158,6 +166,9 @@ host.conf                                                                       
 # 31566 close(fd:5) = 0
 #+END_SRC
 
+#+ATTR_REVEAL: :frag appear
+(sigue las duplicaciones de descriptores de fichero)
+
 ** Formatos de salida
 
 #+BEGIN_SRC shell
@@ -190,6 +201,9 @@ capio -O -o /tmp/output -p `pidof apache`
 #+BEGIN_SRC shell
 capio -q -e 'say if /cookie/i' -p `pidof firefox`
 #+END_SRC
+
+#+ATTR_REVEAL: :frag appear
+(con Firefox todavía no funciona bien porque falta añadir soporte para threads)
 
 ** Scripts
 
@@ -239,10 +253,10 @@ sub _ {
 
 ** Lenguaje
 
-   #+ATTR_REVEAL: :frag appear, fade-out
+   #+ATTR_REVEAL: :frag appear
    I ❤ Rust
 
-   #+ATTR_REVEAL: :frag appear, fade-out
+   #+ATTR_REVEAL: :frag appear
    I ❤ C
 
    #+ATTR_REVEAL: :frag appear
@@ -250,7 +264,7 @@ sub _ {
 
 ** La metodología
 
-   #+ATTR_REVEAL
+   #+ATTR_REVEAL: :frag appear
    I ❤ Caos
 
 ** Perl embebido
@@ -258,7 +272,13 @@ sub _ {
    [[https://github.com/salva/capio/blob/master/perl.h][perl.h]]
 
 
+* Live demo!
+
+   #+ATTR_REVEAL: :frag appear
+   [[https://github.com/salva/capio/blob/master/capio.pod][capio(1)]]
+
 * ¿Preguntas?
 
-* Gracias
+* ¡Gracias!
 
+  https://github.com/salva/ps-madrid-pm-oct-2017-es
